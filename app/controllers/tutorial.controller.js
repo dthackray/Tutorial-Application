@@ -41,14 +41,29 @@ exports.findAll = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "An error occurred while creating the Tutorial"
+                    err.message || "An error occurred while finding the Tutorials"
             })
         })
 }
 
 // Find a single Tutorial with an id
 exports.findOne = (req, res) => {
-  
+  const id = req.params.id
+  Tutorial.findByPk(id)
+    .then (data => {
+        if (data) {
+            res.send(data)
+        } else {
+            res.status(404).send({
+                message: `Cannot find Tutorial with id=${id}`
+            })
+        }  
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: `An error occurred while retrieving Tutorial with id ${id}`
+        })
+    })
 };
 // Update a Tutorial by the id in the request
 exports.update = (req, res) => {
