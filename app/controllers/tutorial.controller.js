@@ -90,7 +90,26 @@ exports.update = (req, res) => {
 };
 // Delete a Tutorial with the specified id in the request
 exports.delete = (req, res) => {
-  
+  const id = req.params.id
+  Tutorial.destroy({
+    where: { id: id }
+  })
+    .then(num => {
+        if (num === 1) {
+            res.send({
+                message: "Tutorial was deleted successfully!"
+            })
+        } else {
+            res.send({
+                message: `Cannot delete Tutorial with id ${id}`
+            })
+            }
+        })
+    .catch(err => {
+        res.status(500).send({
+            message: `Could not delete Tutorial with id ${id}`
+        })
+    })
 };
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
